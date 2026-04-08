@@ -1,0 +1,42 @@
+# 指定是一个 kind 集群配置文件
+kind: Cluster
+
+# api 版本
+apiVersion: kind.x-k8s.io/v1alpha4
+
+# 集群名称
+name: gitops-platform
+
+# node列表
+nodes:
+  # 第一个节点：控制平面节点（Control Plane），即 Master 节点
+  - role: control-plane
+    # 额外的端口映射：将容器内的端口映射到宿主机（Host）上
+
+    extraPortMappings:
+      # 将容器内 30080 端口（通常是 Ingress Controller 或 Service NodePort）映射到宿主机的 80 端口
+      # 是为了可以「从本地电脑访问集群里的服务」；
+      - containerPort: 30080   # 容器（Pod/Node）内部监听的端口
+        hostPort: 80          # 宿主机（你的本地机器）上暴露的端口
+        protocol: TCP         # 协议类型（TCP 或 UDP）
+
+      # 将容器内 30443 端口映射到宿主机的 443 端口（用于 HTTPS）
+      - containerPort: 30443
+        hostPort: 443
+        protocol: TCP
+
+  # 第二个节点：工作节点（Worker），用于运行应用 Pod
+  - role: worker
+
+  # 第三个节点：另一个工作节点，增加高可用性和负载能力
+  - role: worker
+
+# 网络相关配置
+networking:
+  # 指定 Kubernetes API Server 绑定的宿主机 IP 地址
+  # "127.0.0.1" 表示只允许本地访问（更安全），若需从其他机器访问可改为 "0.0.0.0"
+  apiServerAddress: "127.0.0.1"
+
+  # Kubernetes API Server 在宿主机上监听的端口
+  # 默认是随机端口，这里固定为 6443（标准 Kubernetes API 端口）
+  apiServerPort: 6443

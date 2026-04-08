@@ -1,0 +1,8 @@
+# 这个应用是谁
+
+apiVersion: v2              # Helm 3 使用 v2
+name: gitops-platform      # Chart 名字（很重要，后面 ArgoCD 会用）
+description: A GitOps delivery platform for Kubernetes  # 描述
+type: application          # 类型：应用（不是库）
+version: 0.1.0             # Chart 版本（改模板才改它）
+appVersion: "0.1.0"        # 应用版本（对应你的后端版本）

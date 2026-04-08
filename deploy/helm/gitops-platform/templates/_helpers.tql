@@ -1,0 +1,7 @@
+{{- define "gitops-platform.name" -}}
+gitops-platform
+{{- end -}}
+
+{{- define "gitops-platform.fullname" -}}
+gitops-platform
+{{- end -}}

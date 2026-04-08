@@ -1,0 +1,51 @@
+# 怎么跑这个服务
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gitops-platform.fullname" . }}     # 动态生成名字
+spec:
+  replicas: {{ .Values.replicaCount }}                 # 用 values 控制副本
+  selector:
+    matchLabels:
+      app: {{ include "gitops-platform.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "gitops-platform.name" . }}
+    spec:
+      containers:
+        - name: backend
+
+          # 镜像来自 values.yaml
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+
+           # 环境变量注入（核心！）
+          env:
+            - name: APP_NAME
+              value: {{ .Values.env.APP_NAME | quote }}
+            - name: APP_ENV
+              value: {{ .Values.env.APP_ENV | quote }}
+            - name: HTTP_PORT
+              value: {{ .Values.env.HTTP_PORT | quote }}
+            - name: PG_HOST
+              value: {{ .Values.env.PG_HOST | quote }}
+            - name: PG_PORT
+              value: {{ .Values.env.PG_PORT | quote }}
+            - name: PG_USER
+              value: {{ .Values.env.PG_USER | quote }}
+            - name: PG_PASSWORD
+              value: {{ .Values.env.PG_PASSWORD | quote }}
+            - name: PG_DB
+              value: {{ .Values.env.PG_DB | quote }}
+            - name: PG_SSLMODE
+              value: {{ .Values.env.PG_SSLMODE | quote }}
+            - name: REDIS_ADDR
+              value: {{ .Values.env.REDIS_ADDR | quote }}
+            - name: REDIS_PASSWORD
+              value: {{ .Values.env.REDIS_PASSWORD | quote }}
+            - name: REDIS_DB
+              value: {{ .Values.env.REDIS_DB | quote }}
