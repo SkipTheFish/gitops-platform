@@ -14,7 +14,7 @@ env:
 image:
     pullPolicy: IfNotPresent
     repository: gitops-platform/backend
-    tag: aaa
+    tag: dad
 replicaCount: 1
 service:
     port: 8080
