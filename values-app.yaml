@@ -8,7 +8,7 @@ environment: dev
 image:
     pullPolicy: IfNotPresent
     repository: nginx
-    tag: asda
+    tag: sada
 replicaCount: 2
 resources:
     limits:
