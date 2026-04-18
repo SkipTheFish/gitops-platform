@@ -1,0 +1,23 @@
+appName: gitops-test-app
+env:
+    - name: DB_HOST
+      value: localhost
+    - name: APP_MODE
+      value: debug
+environment: dev
+image:
+    pullPolicy: IfNotPresent
+    repository: nginx
+    tag: asda
+replicaCount: 2
+resources:
+    limits:
+        cpu: 200m
+        memory: 256Mi
+    requests:
+        cpu: 100m
+        memory: 128Mi
+service:
+    port: 80
+    targetPort: 80
+    type: ClusterIP
